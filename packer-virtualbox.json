@@ -3,7 +3,7 @@
     "src_image_name": "{{ env `SRC_IMAGE_NAME` }}",
     "src_image_version": "{{ env `SRC_IMAGE_VERSION` }}",
     "image_name": "ubuntu-18.04-pip3",
-    "image_version": "3.0.{{timestamp}}",
+    "image_version": "1.0.{{timestamp}}",
     "cloud_token": "{{ env `PACKER_VAGRANTCLOUD_TOKEN` }}",
     "inspec_profile": "baseline-ubuntu-18.04-pip3",
     "inspec_report": "/inspec/inspec_html_report/baseline-ubuntu-18.04-pip3_report.html",
@@ -12,7 +12,12 @@
     "github_inspec_report": "{{user `github_repo`}}/blob/{{user `image_version`}}{{user `inspec_report`}}",
     "vagrant_template": "./packer/files-prov/template/Vagrantfile",
     "vagrantcloud_base_image": "https://app.vagrantup.com/elegoev/boxes/ubuntu-18.04/versions/{{user `src_image_version`}}",
-    "application_info": "https://github.com/elegoev/basebox-ubuntu-18.04-pip3/blob/{{user `image_version`}}/installed-application.md"
+    "application_info": "https://github.com/elegoev/basebox-ubuntu-18.04-pip3/blob/{{user `image_version`}}/installed-application.md",
+
+    "box_namespace": "elegoev",
+    "box_description": "ubuntu 18.04 basebox",
+    "box_shortdescription": "vagrant basebox with ubuntu 18.04 and pip3"
+
   },
   "builders": [
     {
@@ -42,7 +47,12 @@
   "post-processors": [
     {
       "type": "shell-local",
-      "environment_vars": ["IMAGE_NAME={{user `image_name`}}"],
+      "environment_vars": [
+        "IMAGE_NAME={{user `image_name`}}",
+        "BOX_NAMESPACE={{user `box_namespace`}}",
+        "BOX_DESCRIPTION={{user `box_description`}}",
+        "BOX_SHORTDESCRIPTION={{user `box_shortdescription`}}"
+      ],
       "execute_command": ["powershell.exe", "{{.Vars}} {{.Script}}"],
       "env_var_format": "$env:%s=\"%s\"; ",
       "script": "./packer/post-processors/vagrant-cloud-create-box.ps1"  
