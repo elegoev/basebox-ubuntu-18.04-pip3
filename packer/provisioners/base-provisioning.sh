@@ -2,17 +2,14 @@
 
 application_file_path="/vagrant/installed-application.md"
 
-# install pip3
-while :
-do
-  sudo apt install python3-pip -y
-  retcode=$?
-  if [ $retcode -eq 0 ]; then
-    break
-  fi
-  echo "sleep 5s ..."
-  sleep 5
-done
+# sudo apt install software-properties-common 
+sudo apt update
+
+# Install Supporting Software
+sudo apt install -y software-properties-common
+
+# Install Python3
+sudo apt install python3 python3-pip -y
 
 # delete .cache
 sudo rm -fr /home/vagrant/.cache
